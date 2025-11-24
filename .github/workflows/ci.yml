@@ -35,5 +35,13 @@ jobs:
             -t pruebatecsupermercado:latest \
             ./pruebatecsupermercado
 
+      # 5. Images are ready and test running the images
       - name: List built images
         run: docker images
+
+      - name: Run container test
+        run: |
+          docker run -d --name testapp -p 8080:8080 pruebatecsupermercado:latest
+          sleep 10
+          docker logs testapp
+          docker stop testapp
