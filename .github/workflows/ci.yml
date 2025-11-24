@@ -34,3 +34,6 @@ jobs:
           docker build \
             -t pruebatecsupermercado:latest \
             ./pruebatecsupermercado
+
+      - name: List built images
+        run: docker images
