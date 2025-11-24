@@ -1,0 +1,35 @@
+name: CI - Build Java and Docker Image
+
+on:
+  push:
+    branches: ["main"]
+  pull_request:
+    branches: ["main"]
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      # 1. Checkout del código
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      # 2. Configurar Java 17
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: "17"
+          distribution: "temurin"
+          cache: maven
+
+      # 3. Compilar tu proyecto con Maven (sin tests)
+      - name: Maven clean package
+        run: mvn -B -DskipTests -f pruebatecsupermercado/pom.xml clean package
+
+      # 4. Build de la imagen Docker
+      - name: Build Docker image
+        run: |
+          docker build \
+            -t pruebatecsupermercado:latest \
+            ./pruebatecsupermercado
